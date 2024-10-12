@@ -2,7 +2,7 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, f
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Boolean
-from flask_bootstrap import Bootstrap5
+from flask_bootstrap import Bootstrap
 from flask_login import (LoginManager, login_user, logout_user, login_required, current_user, UserMixin,)
 from forms import RegistrationForm, LoginForm, CafeForm
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -15,7 +15,7 @@ from flask_migrate import Migrate
 load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'FLASK_KEY'
-Bootstrap5()
+Bootstrap()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
