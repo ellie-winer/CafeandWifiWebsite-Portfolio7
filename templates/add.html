@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Add a Cafe</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control", required=True) }}
+        </div>
+        <div class="form-group">
+            {{ form.map_url.label(class="form-label") }}
+            {{ form.map_url(class="form-control", required=True) }}
+        </div>
+        <div class="form-group">
+            <label>Image Option</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="image_option" id="urlOption" value="url" checked>
+                <label class="form-check-label" for="urlOption">Image URL</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="image_option" id="uploadOption" value="upload">
+                <label class="form-check-label" for="uploadOption">Upload Image</label>
+            </div>
+        </div>
+        <div class="form-group" id="img_url_group">
+            {{ form.img_url.label(class="form-label") }}
+            {{ form.img_url(class="form-control") }}
+        </div>
+        <div class="form-group" id="image_file_group" style="display: none;">
+            {{ form.img_file_path.label(class="form-label") }}
+            {{ form.img_file_path(class="form-control-file") }}
+        </div>
+        <div class="form-group">
+            {{ form.location.label(class="form-label") }}
+            {{ form.location(class="form-control", required=True) }}
+        </div>
+        <div class="form-group">
+            {{ form.seats.label(class="form-label") }}
+            {{ form.seats(class="form-control", required=True) }}
+        </div>
+        <div class="form-check">
+            {{ form.has_wifi(class="form-check-input") }}
+            {{ form.has_wifi.label(class="form-check-label") }}
+        </div>
+        <div class="form-check">
+            {{ form.has_sockets(class="form-check-input") }}
+            {{ form.has_sockets.label(class="form-check-label") }}
+        </div>
+        <div class="form-check">
+            {{ form.can_take_calls(class="form-check-input") }}
+            {{ form.can_take_calls.label(class="form-check-label") }}
+        </div>
+        <div class="form-check">
+            {{ form.has_toilet(class="form-check-input") }}
+            {{ form.has_toilet.label(class="form-check-label") }}
+        </div>
+        <div class="form-group">
+            {{ form.coffee_price.label(class="form-label") }}
+            {{ form.coffee_price(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+    </form>
+
+    <script>
+        // JavaScript to toggle image input fields based on selected option
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlOption = document.getElementById('urlOption');
+            const uploadOption = document.getElementById('uploadOption');
+            const imgUrlGroup = document.getElementById('img_url_group');
+            const imageFileGroup = document.getElementById('image_file_group');
+
+            urlOption.addEventListener('change', function() {
+                if (this.checked) {
+                    imgUrlGroup.style.display = 'block';
+                    imageFileGroup.style.display = 'none';
+                }
+            });
+
+            uploadOption.addEventListener('change', function() {
+                if (this.checked) {
+                    imgUrlGroup.style.display = 'none';
+                    imageFileGroup.style.display = 'block';
+                }
+            });
+        });
+    </script>
+{% endblock %}
+

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1 class="mb-4">Cafes Available</h1>
+    <hr>
+    <div class="row">
+        {% for cafe in cafes %}
+            <div class="col-md-4">
+                <div class="card mb-4 d-flex flex-column">
+                    {% if cafe.img_url %}
+                    <img src="{{ cafe.img_url }}" class="card-img-top" alt="{{ cafe.name }}"
+                         onerror="this.onerror=null; this.src='assets/backup_image.png';">
+                {% elif cafe.image_file_path %}  <!-- Check for uploaded file -->
+                    <img src="{{ url_for('static', filename='assets/' ~ cafe.image_file_path) }}" class="card-img-top" alt="{{ cafe.name }}"
+                         onerror="this.onerror=null; this.src='assets/backup_image.png';">
+                {% else %}
+                    <img src="assets/backup_image.png" class="card-img-top" alt="Backup Image">
+                {% endif %}
+                    <div class="card-body d-flex flex-column flex-grow-1">
+                        <h5 class="card-title">{{ cafe.name }}</h5>
+                        <p class="card-text">
+                            <strong>Location:</strong> {{ cafe.location }}<br>
+                            <strong>Seats:</strong> {{ cafe.seats }}<br>
+                            <strong>Has Wifi:</strong> {{ 'Yes' if cafe.has_wifi else 'No' }}<br>
+                            <strong>Has Sockets:</strong> {{ 'Yes' if cafe.has_sockets else 'No' }}<br>
+                            <strong>Can Take Calls:</strong> {{ 'Yes' if cafe.can_take_calls else 'No' }}<br>
+                            <strong>Has Toilet:</strong> {{ 'Yes' if cafe.has_toilet else 'No' }}<br>
+                            <strong>Coffee Price:</strong> {{ cafe.coffee_price or 'N/A' }}
+                        </p>
+                        <div class="mt-auto">
+                            <a href="{{ cafe.map_url }}" target="_blank" class="btn btn-info">View on Map</a>
+                            {% if current_user.is_authenticated %}
+                                <a href="{{ url_for('edit', cafe_id=cafe.id) }}" class="btn btn-light">Edit</a>
+                                <form action="{{ url_for('delete_cafe', cafe_id=cafe.id) }}" method="POST" style="display:inline;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    {{ csrf_token() }}
+                                    <button type="submit" class="btn btn-dark">Delete</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('post_new_cafe') }}" class="btn btn-success">Add New Cafe</a>
+    {% else %}
+        <p><a href="{{ url_for('login') }}">Log in</a> to add a new cafe.</p>
+    {% endif %}
+{% endblock %}
